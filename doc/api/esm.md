@@ -106,10 +106,11 @@ provides interoperability between them and its original module format,
 
 Node.js has two module systems: [CommonJS][] modules and ECMAScript modules.
 
-Authors can tell Node.js to use the ECMAScript modules loader
-via the `.mjs` file extension, the `package.json` [`"type"`][] field, or the
-[`--input-type`][] flag. Outside of those cases, Node.js will use the CommonJS
-module loader. See [Determining module system][] for more details.
+Authors can tell Node.js to use the ECMAScript modules loader via the `.mjs`
+file extension, the `package.json` [`"type"`][] field, the [`--input-type`][]
+flag, or the [`--experimental-default-type`][] flag. Outside of those cases,
+Node.js will use the CommonJS module loader. See [Determining module system][]
+for more details.
 
 <!-- Anchors to make sure old links find a target -->
 
@@ -1008,8 +1009,12 @@ _isImports_, _conditions_)
 > 5. Let _packageURL_ be the result of **LOOKUP\_PACKAGE\_SCOPE**(_url_).
 > 6. Let _pjson_ be the result of **READ\_PACKAGE\_JSON**(_packageURL_).
 > 7. If _pjson?.type_ exists and is _"module"_, then
->    1. If _url_ ends in _".js"_, then
->       1. Return _"module"_.
+>    1. If _url_ ends in _".js"_ or has no file extension, then
+>       1. If `--experimental-wasm-modules` is enabled and the file at _url_
+>          contains the header for a WebAssembly module, then
+>          1. Return _"wasm"_.
+>       2. Otherwise,
+>          1. Return _"module"_.
 >    2. Return **undefined**.
 > 8. Otherwise,
 >    1. Return **undefined**.
@@ -1059,6 +1064,7 @@ resolution for ESM specifiers is [commonjs-extension-resolution-loader][].
 [URL]: https://url.spec.whatwg.org/
 [`"exports"`]: packages.md#exports
 [`"type"`]: packages.md#type
+[`--experimental-default-type`]: cli.md#--experimental-default-typetype
 [`--input-type`]: cli.md#--input-typetype
 [`data:` URLs]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
 [`export`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export

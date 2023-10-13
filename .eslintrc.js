@@ -256,7 +256,6 @@ module.exports = {
         message: 'Use `globalThis.crypto`.',
       },
     ],
-    'no-return-await': 'error',
     'no-self-compare': 'error',
     'no-tabs': 'error',
     'no-template-curly-in-string': 'error',
@@ -361,5 +360,6 @@ module.exports = {
     WritableStream: 'readable',
     WritableStreamDefaultWriter: 'readable',
     WritableStreamDefaultController: 'readable',
+    WebSocket: 'readable',
   },
 };
